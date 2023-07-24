@@ -3,66 +3,58 @@
     import { reactive } from 'vue';
 
     import InputNew from './InputNew.vue';
-
-    /* Variables reactivas: 
-        ref para valores sencillos (números, string, bool...) 
-        reactive para mas complejos (objetos o arreglos) */
-    let boards = reactive([ // lista de objetos con sus propiedades
+    let boards = reactive([ 
         {
             id: crypto.randomUUID(),
             name: "TO-DO",
-            items: [    // elementos que movemos de un tablero a otro
-                /* {
+            items: [ 
+                 {
                     id: crypto.randomUUID,
-                    title: "Feature de archivos"
+                    title: "Pay Bills"
                 },
                 {
                     id: crypto.randomUUID,
-                    title: "Resolver bug"
-                }, */
+                    title: "Go Shopping"
+                }, 
             ]
         },
         {
             id: crypto.randomUUID(),
             name: "DOING",
-            items: [    // elementos que movemos de un tablero a otro
-                /* {
-                    id: crypto.randomUUID,
-                    title: "Reporte 23"
-                },
+            items: [ 
                 {
                     id: crypto.randomUUID,
-                    title: "Revisión disposición display"
-                }, */
+                    title: "See the Doctor"
+                },             
             ]
         },
         {
             id: crypto.randomUUID(),
             name: "DONE",
-            items: [    // elementos que movemos de un tablero a otro
-                /* {
+            items: [   
+                 {
                     id: crypto.randomUUID,
-                    title: "Cambio en files"
+                    title: "Watch a movie"
                 },
                 {
                     id: crypto.randomUUID,
-                    title: "Resolución bug arrow function pie de página"
-                }, */
+                    title: "Read emails"
+                },
+                {
+                    id: crypto.randomUUID,
+                    title: "listen to music"
+                }, 
             ]
         },
     ]);
-
-    
     function handleNewItem(text, board) {
-        //console.log(text.value, board.id, board.name);
         board.items.push({
             id: crypto.randomUUID(),
             title: text.value,
         });
     }
-
     function handleNewBoard() {
-        const name = prompt("Nombre del tablero: ");
+        const name = prompt("Name: ");
         if (!!name) {
             boards.push({
                 id: crypto.randomUUID(),
@@ -73,33 +65,16 @@
     }
 
     // drag and drop:
-
     function startDrag(event, board, item) {
-        
         event.dataTransfer.setData('text/plain', JSON.stringify({boardId: board.id, itemId: item.id}));
-
     }
-
     function onDrop(event, destino) {
-        
         const { boardId, itemId} = JSON.parse(event.dataTransfer.getData('text/plain'));
-
-        //console.log(`Soltado con los valores: boardId = ${boardId} e itemId = ${itemId}`);
-
         const originBoard = boards.find((board) => board.id === boardId);
         const originItem = originBoard.items.find((item) => item.id === itemId);
-
-
-        // error con elementos sin id
-        /* console.log(originBoard.name);
-        console.log(originItem.title); */
-
         destino.items.push({ ...originItem });
-
         originBoard.items = originBoard.items.filter((item) => item !== originItem);
-
     }
-
 
 </script>
 
@@ -120,20 +95,18 @@
         </div>
     </div>
 </template>
-<style scoped>
 
+<style scoped>
 .boards-container{
     display: flex;
     justify-content: center;
 }
-
     .boards {
         display: flex;
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
     }
-
     .board {
         width: 300px;
         min-height: 400px;
